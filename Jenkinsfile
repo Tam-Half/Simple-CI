@@ -33,7 +33,7 @@ pipeline {
             }
             steps {
                 sh '''
-                    echo "📦 Cài dependency bằng Composer..."
+                    echo " Cài dependency bằng Composer..."
                     composer install --no-interaction --prefer-dist
                 '''
             }
