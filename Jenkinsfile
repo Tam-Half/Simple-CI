@@ -39,7 +39,7 @@ pipeline {
 
         stage('SonarQube Scan') {
             steps {
-                withSonarQubeEnv('SonarQube-Server') {   // Tên SonarQube server trong Jenkins
+                withSonarQubeEnv('SonarQube-Server') {  
                     withCredentials([string(credentialsId: 'sonarqube-token', variable: 'sonarqube-token')]) {
                         sh """
                             sonar-scanner \
