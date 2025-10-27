@@ -5,7 +5,7 @@ pipeline {
         SONAR_HOST_URL = 'http://172.16.3.130:13999'
         SONAR_PROJECT_KEY = 'simple-ci-project'
         SONAR_PROJECT_NAME = 'Simple CI - PHP Project'
-        PATH = "/opt/sonar-scanner/bin:${env.PATH}"
+        PATH = "/home/lab-build/sonar-scanner/bin:${env.PATH}"
     }
 
     stages {
@@ -34,7 +34,7 @@ pipeline {
             steps {
                 sh '''
                     echo "📦 Cài dependency bằng Composer..."
-                    composer install --no-interaction --prefer-dist || true
+                    composer install --no-interaction --prefer-dist
                 '''
             }
         }
@@ -43,16 +43,16 @@ pipeline {
             steps {
                 withSonarQubeEnv('SonarQube-Server') {
                     withCredentials([string(credentialsId: 'sonarqube-token', variable: 'SONAR_TOKEN')]) {
-                        sh """
+                        sh(script: """
                             sonar-scanner -X \
                             -Dsonar.projectKey=${SONAR_PROJECT_KEY} \
-                            -Dsonar.projectName="${SONAR_PROJECT_NAME}" \
+                            -Dsonar.projectName='${SONAR_PROJECT_NAME}' \
                             -Dsonar.sources=. \
                             -Dsonar.host.url=${SONAR_HOST_URL} \
-                            -Dsonar.login=${SONAR_TOKEN} \
+                            -Dsonar.login=$SONAR_TOKEN \
                             -Dsonar.sourceEncoding=UTF-8 \
                             -Dsonar.exclusions=**/vendor/**,**/node_modules/**
-                        """
+                        """)
                     }
                 }
             }
@@ -60,7 +60,7 @@ pipeline {
 
         stage('Quality Gate') {
             steps {
-                timeout(time: 2, unit: 'MINUTES') {
+                timeout(time: 3, unit: 'MINUTES') {
                     waitForQualityGate abortPipeline: true
                 }
             }
