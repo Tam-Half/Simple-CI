@@ -72,7 +72,7 @@ pipeline {
             echo "✅ DONE | Xem báo cáo SonarQube tại: ${SONAR_HOST_URL}/dashboard?id=${SONAR_PROJECT_KEY}"
         }
         failure {
-            echo "❌ Pipeline Failed"
+            echo " Pipeline Failed"
         }
     }
 }
