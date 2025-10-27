@@ -5,13 +5,13 @@ pipeline {
         SONAR_HOST_URL = 'http://172.16.3.130:13999'
         SONAR_PROJECT_KEY = 'simple-ci-project'
         SONAR_PROJECT_NAME = 'Simple CI - PHP Project'
-        PATH = "/opt/sonar-scanner/bin:${env.PATH}"  // đảm bảo sonar-scanner chạy được
+        PATH = "/opt/sonar-scanner/bin:${env.PATH}"  
     }
 
     stages {
         stage('Checkout Code') {
             steps {
-                echo '📥 Đang checkout code từ GitHub...'
+                echo ' Đang checkout code từ GitHub...'
                 checkout scm
             }
         }
