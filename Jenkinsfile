@@ -40,7 +40,7 @@ pipeline {
         stage('SonarQube Scan') {
             steps {
                 withSonarQubeEnv('SonarQube-Server') {  
-                    withCredentials([string(credentialsId: 'sonarqube-token', variable: 'sonarqube-token')]) {
+                    withCredentials([string(credentialsId: 'sonarqube-token', variable: 'SONAR_TOKEN')]) {
                         sh """
                             sonar-scanner \
                             -Dsonar.projectKey=${SONAR_PROJECT_KEY} \
