@@ -11,7 +11,7 @@ pipeline {
     stages {
         stage('Checkout Code') {
             steps {
-                echo ' Đang checkout code từ GitHub...'
+                echo '📥 Đang checkout code từ GitHub...'
                 checkout scm
             }
         }
@@ -23,6 +23,8 @@ pipeline {
                     php --version || echo "⚠️ PHP chưa được cài trên Agent"
                     echo "=== Composer Version ==="
                     composer --version || echo "⚠️ Composer chưa được cài trên Agent"
+                    echo "=== Java Version dùng Sonar ==="
+                    java -version
                 '''
             }
         }
@@ -33,7 +35,7 @@ pipeline {
             }
             steps {
                 sh '''
-                    echo " Cài dependency bằng Composer..."
+                    echo "📦 Cài dependency bằng Composer..."
                     composer install --no-interaction --prefer-dist
                 '''
             }
@@ -45,13 +47,14 @@ pipeline {
                     withCredentials([string(credentialsId: 'sonar-qube-scanner', variable: 'SONAR_TOKEN')]) {
                         sh(script: """
                             sonar-scanner -X \
-                            -Dsonar.projectKey=${SONAR_PROJECT_KEY} \
-                            -Dsonar.projectName="${SONAR_PROJECT_NAME}" \
-                            -Dsonar.sources=. \
-                            -Dsonar.host.url=${SONAR_HOST_URL} \
-                            -Dsonar.login=$SONAR_TOKEN \
-                            -Dsonar.sourceEncoding=UTF-8 \
-                            -Dsonar.exclusions=**/vendor/**,**/node_modules/**
+                              -Djava.home=/usr/lib/jvm/java-21-openjdk-amd64 \
+                              -Dsonar.projectKey=${SONAR_PROJECT_KEY} \
+                              -Dsonar.projectName="${SONAR_PROJECT_NAME}" \
+                              -Dsonar.sources=. \
+                              -Dsonar.host.url=${SONAR_HOST_URL} \
+                              -Dsonar.login=$SONAR_TOKEN \
+                              -Dsonar.sourceEncoding=UTF-8 \
+                              -Dsonar.exclusions=**/vendor/**,**/node_modules/**
                         """)
                     }
                 }
@@ -72,8 +75,7 @@ pipeline {
             echo "✅ DONE | Xem báo cáo SonarQube tại: ${SONAR_HOST_URL}/dashboard?id=${SONAR_PROJECT_KEY}"
         }
         failure {
-            echo " Pipeline Failed"
+            echo "❌ Pipeline Failed - Kiểm tra log để fix lỗi!"
         }
     }
 }
-// cmt test 12321321
