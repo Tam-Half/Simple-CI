@@ -2,7 +2,7 @@ pipeline {
     agent { label 'lab-build' }
 
     environment {
-        SONAR_HOST_URL = 'http://172.16.3.130:13999'
+        SONAR_HOST_URL = 'http://'
         SONAR_PROJECT_KEY = 'simple-ci-project'
         SONAR_PROJECT_NAME = 'Simple CI - PHP Project'
         PATH = "/home/lab-build/sonar-scanner/bin:${env.PATH}"
