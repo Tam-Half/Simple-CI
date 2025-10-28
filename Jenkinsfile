@@ -5,7 +5,7 @@ pipeline {
         SONAR_HOST_URL = 'http://172.16.3.130:13999/'
         SONAR_PROJECT_KEY = 'simple-ci-project'
         SONAR_PROJECT_NAME = 'Simple CI - PHP Project'
-        PATH = "/home/jenkinsUser/sonar-qube/bin:${env.PATH}"
+        PATH = "/home/jenkinsUser/sonar-scanner/bin:${env.PATH}"
     }
 
     stages {
