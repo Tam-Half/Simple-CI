@@ -2,10 +2,11 @@ pipeline {
     agent { label 'jenkinsagent' }
 
     environment {
+        JAVA_HOME = '/usr/lib/jvm/bellsoft-java21-amd64'
+        PATH = "${JAVA_HOME}/bin:/home/jenkinsUser/sonar-scanner/sonar-scanner-4.8.0.2856/bin:${env.PATH}"
         SONAR_HOST_URL = 'http://172.16.3.130:13999/'
         SONAR_PROJECT_KEY = 'simple-ci-project'
         SONAR_PROJECT_NAME = 'Simple CI - PHP Project'
-        PATH = "/home/jenkinsUser/sonar-scanner/bin:${env.PATH}"
     }
 
     stages {
@@ -25,6 +26,8 @@ pipeline {
                     composer --version || echo "⚠️ Composer chưa được cài trên Agent"
                     echo "=== Java Version dùng Sonar ==="
                     java -version
+                    echo "=== SonarScanner Version ==="
+                    sonar-scanner -v
                 '''
             }
         }
@@ -46,8 +49,8 @@ pipeline {
                 withSonarQubeEnv('SonarQube-Server') {
                     withCredentials([string(credentialsId: 'sonar-qube-scanner', variable: 'SONAR_TOKEN')]) {
                         sh(script: """
-                            sonar-scanner -X \
-                              -Djava.home=/usr/lib/jvm/java-21-openjdk-amd64 \
+                            /home/jenkinsUser/sonar-scanner/sonar-scanner-4.8.0.2856/bin/sonar-scanner -X \
+                              -Djava.home=${JAVA_HOME} \
                               -Dsonar.projectKey=${SONAR_PROJECT_KEY} \
                               -Dsonar.projectName="${SONAR_PROJECT_NAME}" \
                               -Dsonar.sources=. \
@@ -72,10 +75,10 @@ pipeline {
 
     post {
         success {
-            echo "✅ DONE | Xem báo cáo SonarQube tại: ${SONAR_HOST_URL}/dashboard?id=${SONAR_PROJECT_KEY}"
+            echo " DONE | Xem báo cáo SonarQube tại: ${SONAR_HOST_URL}/dashboard?id=${SONAR_PROJECT_KEY}"
         }
         failure {
-            echo "❌ Pipeline Failed - Kiểm tra log để fix lỗi!"
+            echo " Pipeline Failed - Kiểm tra log để fix lỗi!"
         }
     }
 }
