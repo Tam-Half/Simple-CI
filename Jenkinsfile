@@ -1,5 +1,5 @@
 pipeline {
-    agent { label 'lab-build' }
+    agent { label 'jenkinsagent' }
 
     environment {
         SONAR_HOST_URL = 'http://172.16.3.130:13999/'
