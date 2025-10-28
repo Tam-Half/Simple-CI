@@ -2,10 +2,10 @@ pipeline {
     agent { label 'lab-build' }
 
     environment {
-        SONAR_HOST_URL = 'http://'
+        SONAR_HOST_URL = 'http://172.16.3.130:13999/'
         SONAR_PROJECT_KEY = 'simple-ci-project'
         SONAR_PROJECT_NAME = 'Simple CI - PHP Project'
-        PATH = "/home/lab-build/sonar-scanner/bin:${env.PATH}"
+        PATH = "/home/jenkinsUser/sonar-qube/bin:${env.PATH}"
     }
 
     stages {
@@ -42,7 +42,7 @@ pipeline {
         stage('SonarQube Scan') {
             steps {
                 withSonarQubeEnv('SonarQube-Server') {
-                    withCredentials([string(credentialsId: 'sonarqube-token', variable: 'SONAR_TOKEN')]) {
+                    withCredentials([string(credentialsId: 'sonar-qube-scanner', variable: 'SONAR_TOKEN')]) {
                         sh(script: """
                             sonar-scanner -X \
                             -Dsonar.projectKey=${SONAR_PROJECT_KEY} \
