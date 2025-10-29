@@ -2,8 +2,6 @@ pipeline {
     agent { label 'jenkinsagent' }
 
     environment {
-        JAVA_HOME = 'credentials('JAVA_PATH')'
-        PATH = "${JAVA_HOME}/bin:/home/jenkinsUser/sonar-scanner/sonar-scanner-4.8.0.2856/bin:${env.PATH}"
         SONAR_HOST_URL = credentials('IP_SONAR_SERVER')
         SONAR_PROJECT_KEY = 'simple-ci-project'
         SONAR_PROJECT_NAME = 'Simple CI - PHP Project'
@@ -49,7 +47,6 @@ pipeline {
                 withSonarQubeEnv('SonarQube-Server') {
                     withCredentials([string(credentialsId: 'sonar-qube-scanner', variable: 'SONAR_TOKEN')]) {
                         sh(script: """
-                            /home/jenkinsUser/sonar-scanner/sonar-scanner-4.8.0.2856/bin/sonar-scanner -X \
                               -Djava.home=${JAVA_HOME} \
                               -Dsonar.projectKey=${SONAR_PROJECT_KEY} \
                               -Dsonar.projectName="${SONAR_PROJECT_NAME}" \
