@@ -2,9 +2,9 @@ pipeline {
     agent { label 'jenkinsagent' }
 
     environment {
-        JAVA_HOME = '/usr/lib/jvm/bellsoft-java21-amd64'
+        JAVA_HOME = 'credentials('JAVA_PATH')'
         PATH = "${JAVA_HOME}/bin:/home/jenkinsUser/sonar-scanner/sonar-scanner-4.8.0.2856/bin:${env.PATH}"
-        SONAR_HOST_URL = 'http://172.16.3.130:13999/'
+        SONAR_HOST_URL = credentials('IP_SONAR_SERVER')
         SONAR_PROJECT_KEY = 'simple-ci-project'
         SONAR_PROJECT_NAME = 'Simple CI - PHP Project'
     }
