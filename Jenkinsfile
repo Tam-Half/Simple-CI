@@ -47,7 +47,6 @@ pipeline {
                 withSonarQubeEnv('SonarQube-Server') {
                     withCredentials([string(credentialsId: 'sonar-qube-scanner', variable: 'SONAR_TOKEN')]) {
                         sh(script: """
-                              -Djava.home=${JAVA_HOME} \
                               -Dsonar.projectKey=${SONAR_PROJECT_KEY} \
                               -Dsonar.projectName="${SONAR_PROJECT_NAME}" \
                               -Dsonar.sources=. \
