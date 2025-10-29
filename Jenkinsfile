@@ -48,11 +48,11 @@ pipeline {
                     withCredentials([string(credentialsId: 'sonar-qube-scanner', variable: 'SONAR_TOKEN')]) {
                         sh(script: """
                                sonar-scanner \
-                              -Dsonar.projectKey=${SONAR_PROJECT_KEY} \
-                              -Dsonar.projectName="${SONAR_PROJECT_NAME}" \
+                              -Dsonar.projectKey="$SONAR_PROJECT_KEY" \
+                              -Dsonar.projectName="$SONAR_PROJECT_NAME" \
                               -Dsonar.sources=. \
-                              -Dsonar.host.url=${SONAR_HOST_URL} \
-                              -Dsonar.login=$SONAR_TOKEN \
+                              -Dsonar.host.url="$SONAR_HOST_URL" \
+                              -Dsonar.login="$SONAR_TOKEN" \
                               -Dsonar.sourceEncoding=UTF-8 \
                               -Dsonar.exclusions=**/vendor/**,**/node_modules/**
                         """)
@@ -72,7 +72,7 @@ pipeline {
 
     post {
         success {
-            echo " DONE | Xem báo cáo SonarQube tại: ${SONAR_HOST_URL}/dashboard?id=${SONAR_PROJECT_KEY}"
+            echo " DONE | Xem báo cáo SonarQube tại: SonarQue_SERVER"
         }
         failure {
             echo " Pipeline Failed - Kiểm tra log để fix lỗi!"
