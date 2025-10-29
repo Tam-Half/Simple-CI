@@ -46,16 +46,16 @@ pipeline {
             steps {
                 withSonarQubeEnv('SonarQube-Server') {
                     withCredentials([string(credentialsId: 'sonar-qube-scanner', variable: 'SONAR_TOKEN')]) {
-                        sh(script: """
+                        sh(script: '''
                                sonar-scanner \
-                              -Dsonar.projectKey="$SONAR_PROJECT_KEY" \
-                              -Dsonar.projectName="$SONAR_PROJECT_NAME" \
+                              -Dsonar.projectKey="${SONAR_PROJECT_KEY}" \
+                              -Dsonar.projectName="${SONAR_PROJECT_NAME}" \
                               -Dsonar.sources=. \
-                              -Dsonar.host.url="$SONAR_HOST_URL" \
-                              -Dsonar.login="$SONAR_TOKEN" \
+                              -Dsonar.host.url="${SONAR_HOST_URL}" \
+                              -Dsonar.login="${SONAR_TOKEN}" \
                               -Dsonar.sourceEncoding=UTF-8 \
                               -Dsonar.exclusions=**/vendor/**,**/node_modules/**
-                        """)
+                        ''')
                     }
                 }
             }
